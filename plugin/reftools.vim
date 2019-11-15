@@ -7,6 +7,13 @@
 " created: 2019-11-15 17:15:07
 "==============================================================
 
+if exists('g:reftools_version')
+  finish
+endif
+
+let g:reftools_version = '0.1.0'
+lockvar g:reftools_version
+
 command! Fixplurals call reftools#fixplurals()
 command! Fillstruct call reftools#fillstruct()
 command! Fillswitch call reftools#fillswitch()
