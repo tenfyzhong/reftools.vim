@@ -1,0 +1,68 @@
+*reftools* *reftools.txt* author: tenfyzhong
+
+This help file explains the reftools Vim Plugin. 
+================================================================================
+Contents:
+0. Introduction ------------------------------------ |reftools-introduction|
+1. Install ----------------------------------------- |reftools-install|
+2. Usage ------------------------------------------- |reftools-usage|
+3. Command ----------------------------------------- |reftools-command|
+4. Mapping ----------------------------------------- |reftools-mapping|
+5. LICENSE ----------------------------------------- |reftools-license|
+
+================================================================================
+0. Introduction                                          *reftools-introduction*
+reftools.vim wraps https://github.com/davidrjenni/reftools. 
+It make you east to call reftools.  
+
+================================================================================
+1. Install                                                    *reftools-install*
+I suggest you to use a plugin manager, such vim-plug or others.
+- vim-plug
+```viml
+Plug 'tenfyzhong/reftools.vim'
+```
+- Manual
+```
+git clone https://github.com/tenfyzhong/reftools.vim.git ~/.vim/bundle/reftools.vim
+echo 'set rtp+=~/.vim/bundle/reftools.vim' >> ~/.vimrc
+vim -c 'helptag ~/.vim/bundle/reftools.vim/doc' -c qa!
+```
+
+================================================================================
+2. Usage                                                        *reftools-usage*
+You can call a command or mapping on the current file.
+
+================================================================================
+3. Command                                                    *reftools-command*
+*Fixplurals*
+Call `fixplurals` on the current package.
+
+*Fillstruct*
+Call `fillstruct` on the current line of the file.
+
+*Fillswitch*
+Call `fillswitch` on the current line of the file.
+
+================================================================================
+4. Mapping                                                    *reftools-mapping*
+                                                   *<Plug>(reftools#fixplurals)*
+<Plug>(reftools#fixplurals)
+mode: n
+Call `fixplurals` on the current package.
+
+                                                   *<Plug>(reftools#fillstruct)*
+<Plug>(reftools#fillstruct)
+mode: n
+Call `fillstruct` on the current line of the file.
+
+                                                   *<Plug>(reftools#fillswitch)*
+<Plug>(reftools#fillswitch)
+mode: n
+Call `fillswitch` on the current line of the file.
+
+================================================================================
+5. LICENSE                                                    *reftools-license*
+MIT License Copyright (c) 2019 tenfyzhong
+
+" vim:ft=help:iskeyword+=-:iskeyword+=58:iskeyword+=#,(,),<,>:shiftwidth=2:softtabstop=2
