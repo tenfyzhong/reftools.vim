@@ -21,11 +21,11 @@ function! reftools#fixplurals()
 endfunction
 
 function! reftools#fillstruct()
-  call <SID>fill('fillstruct', 'fillstruct: no struct literal found at selection')
+  call <SID>fill('fillstruct')
 endfunction
 
 function! reftools#fillswitch()
-  call <SID>fill('fillswitch', 'fillswitch: no switch statement found')
+  call <SID>fill('fillswitch')
 endfunction
 
 function! s:checkcommand(command)
@@ -36,23 +36,28 @@ function! s:checkcommand(command)
   return 1
 endfunction
 
-function! s:fill(command, errmsg)
+function! s:fill(command)
   if !<SID>checkcommand(a:command)
     return
   endif
 
   let file = expand('%:p')
   let line = line('.')
-  silent let str = trim(system(printf('%s -file=%s -line=%d', a:command, file, line)))
-  if str ==# a:errmsg
-    echo str
+  let str = trim(system(printf('%s -file=%s -line=%d 2>/dev/null', a:command, file, line)))
+  if str ==# ''
+    echom printf('reftools: %s no result', a:command)
     return
   endif
 
-  let result = json_decode(str)[0]
+  let json = json_decode(str)
+  if len(json) == 0
+    echom printf('reftools: %s no result', a:command)
+    return
+  endif
+  let result = json[0]
+  let curpos = getcurpos()
   exec printf('goto %d', result.start+1)
   exec printf('normal %dxx', result.end-result.start-1)
-  let curpos = getcurpos()
   call <SID>insert(result.code)
   call setpos('.', curpos)
 endfunction
@@ -60,7 +65,9 @@ endfunction
 function! s:insert(text)
   let lines = split(a:text, '\n')
   exec printf('normal! a%s', lines[0])
-  call append(line('.'), lines[1:])
-  exec printf('normal %d==', len(lines))
+  if len(lines) > 1 
+    call append(line('.'), lines[1:])
+    exec printf('normal j%d==', len(lines)-1)
+  endif
 endfunction
 
