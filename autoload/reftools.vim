@@ -40,6 +40,7 @@ function! s:fill(command)
   if !<SID>checkcommand(a:command)
     return
   endif
+  wa
 
   let file = expand('%:p')
   let line = line('.')
@@ -54,19 +55,19 @@ function! s:fill(command)
     echom printf('reftools: %s no result', a:command)
     return
   endif
+
   let result = json[0]
   let curpos = getcurpos()
   exec printf('goto %d', result.start+1)
-  exec printf('normal %dxx', result.end-result.start-1)
-  call <SID>insert(result.code)
+  exec printf('normal! %ds%s', result.end-result.start, result.code)
+  call <SID>format(result.code, curpos)
   call setpos('.', curpos)
 endfunction
 
-function! s:insert(text)
+function! s:format(text, lastpos)
   let lines = split(a:text, '\n')
-  exec printf('normal! a%s', lines[0])
   if len(lines) > 1 
-    call append(line('.'), lines[1:])
+    call setpos('.', a:lastpos)
     exec printf('normal j%d==', len(lines)-1)
   endif
 endfunction
